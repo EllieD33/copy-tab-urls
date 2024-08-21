@@ -1,40 +1,87 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const options = {
-        includeTitle: document.getElementById('option-include-title'),
-        orderedList: document.getElementById('option-ordered-list'),
-        filterDomain: document.getElementById('option-filter-domain'),
-        filterHttp: document.getElementById('option-filter-http'),
-        filterActive: document.getElementById('option-filter-active'),
-        filterPinned: document.getElementById('option-filter-pinned'),
-        filterChoose: document.getElementById('option-filter-choose'),
-        groupDomain: document.getElementById('option-group-domain'),
-        plainText: document.getElementById('option-plain-text'),
-        markdown: document.getElementById('option-markdown'),
-        json: document.getElementById('option-json'),
-        csv: document.getElementById('option-csv'),
-        notifications: document.getElementById('option-general-notifications'),
-        rememberPreferences: document.getElementById('option-general-remember')
-    };
+async function saveOptions(e) {
+    e.preventDefault();
+    const includeTitle = document.querySelector("#option-include-title").checked;
+    const orderedList = document.querySelector("#option-ordered-list").checked;
+    const filterDomain = document.querySelector("#option-filter-domain").checked;
+    const filterHttp = document.querySelector("#option-filter-http").checked;
+    const filterActive = document.querySelector("#option-filter-active").checked;
+    const filterPinned = document.querySelector("#option-filter-pinned").checked;
+    const filterChoose = document.querySelector("#option-filter-choose").checked;
+    const groupDomain = document.querySelector("#option-group-domain").checked;
+    const plainText = document.querySelector("#option-plain-text").checked;
+    const markdown = document.querySelector("#option-markdown").checked;
+    const json = document.querySelector("#option-json").checked;
+    const csv = document.querySelector("#option-csv").checked;
+    const notifications = document.querySelector("#option-general-notifications").checked;
+    const rememberPreferences = document.querySelector("#option-general-remember").checked;
 
-    const saveButton = document.getElementById('save');
-
-    browser.storage.sync.get(Object.keys(options)).then(function(items) {
-        for (let key in options) {
-            if (options.hasOwnProperty(key)) {
-                options[key].checked = items[key] || false;
-            }
-        }
+    await browser.storage.sync.set({
+        includeTitle,
+        orderedList,
+        filterDomain,
+        filterHttp,
+        filterActive,
+        filterPinned,
+        filterChoose,
+        groupDomain,
+        plainText,
+        markdown,
+        json,
+        csv,
+        notifications,
+        rememberPreferences
     });
+    alert('Options saved.');
+}
 
-    saveButton.addEventListener('click', function() {
-        const settings = {};
-        for (let key in options) {
-            if (options.hasOwnProperty(key)) {
-                settings[key] = options[key].checked;
-            }
-        }
-        browser.storage.sync.set(settings).then(function() {
-            alert('Options saved.');
-        });
-    });
-});
+async function restoreOptions() {
+    let {
+        includeTitle,
+        orderedList,
+        filterDomain,
+        filterHttp,
+        filterActive,
+        filterPinned,
+        filterChoose,
+        groupDomain,
+        plainText,
+        markdown,
+        json,
+        csv,
+        notifications,
+        rememberPreferences
+    } = await browser.storage.sync.get([
+        'includeTitle',
+        'orderedList',
+        'filterDomain',
+        'filterHttp',
+        'filterActive',
+        'filterPinned',
+        'filterChoose',
+        'groupDomain',
+        'plainText',
+        'markdown',
+        'json',
+        'csv',
+        'notifications',
+        'rememberPreferences'
+    ]);
+
+    document.querySelector("#option-include-title").checked = includeTitle || false;
+    document.querySelector("#option-ordered-list").checked = orderedList || false;
+    document.querySelector("#option-filter-domain").checked = filterDomain || false;
+    document.querySelector("#option-filter-http").checked = filterHttp || false;
+    document.querySelector("#option-filter-active").checked = filterActive || false;
+    document.querySelector("#option-filter-pinned").checked = filterPinned || false;
+    document.querySelector("#option-filter-choose").checked = filterChoose || false;
+    document.querySelector("#option-group-domain").checked = groupDomain || false;
+    document.querySelector("#option-plain-text").checked = plainText || false;
+    document.querySelector("#option-markdown").checked = markdown || false;
+    document.querySelector("#option-json").checked = json || false;
+    document.querySelector("#option-csv").checked = csv || false;
+    document.querySelector("#option-general-notifications").checked = notifications || false;
+    document.querySelector("#option-general-remember").checked = rememberPreferences || false;
+}
+
+document.addEventListener('DOMContentLoaded', restoreOptions);
+document.querySelector("#options-form").addEventListener("submit", saveOptions);

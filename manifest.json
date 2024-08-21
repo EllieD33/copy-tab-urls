@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "CopyTabUrls",
-  "version": "1.0",
+  "version": "2.0",
   "description": "Copies URLs from open tabs to clipboard.",
   "icons": {
     "48": "icons/copy_all_light.png"
@@ -22,6 +22,14 @@
     },
     "default_title": "Copy Tab URLs"
   },
-  "options_page": "options.html"
+  "options_ui": {
+      "page": "options.html",
+      "browser_style": true
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "6766c4d7-0076-48de-b9da-82de7a56cc06@myextension.com"
+    }
+  }
 }
 
