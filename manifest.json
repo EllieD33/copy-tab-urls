@@ -12,7 +12,7 @@
     "theme"
   ],
   "background": {
-    "scripts": ["getTabUrls.js"],
+    "scripts": ["background.js"],
     "persistent": false
   },
   "browser_action": {
