@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extension Options</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 1rem; }
+        h2 { margin-top: 1.5rem; }
+        label { display: block; margin-bottom: 0.75rem; }
+        .description { font-size: 0.85rem; color: #555; margin-left: 1.5rem; }
+    </style>
+</head>
+<body>
+    <h1>Extension Options</h1>
+
+    <h2>Format Settings</h2>
+    <label>
+        <input type="checkbox" id="option-include-title"/>
+        Include Page Titles
+        <span class="description">Add titles of pages in the output.</span>
+    </label>
+    <label>
+        <input type="checkbox" id="option-ordered-list" />
+        Copy as Ordered List
+        <span class="description">Output the results in a numbered list format.</span>
+    </label>
+
+    <h2>Filtering Options</h2>
+    <label>
+        <input type="checkbox" id="option-filter-domain"/>
+        Filter by Domain
+        <span class="description">Include only URLs from specified domains.</span>
+    </label>
+    <label>
+        <input type="checkbox" id="option-filter-http" />
+        Include Only HTTP/HTTPS
+        <span class="description">Exclude non-web URLs like about: or chrome:.</span>
+    </label>
+    <label>
+        <input type="checkbox" id="option-filter-active" />
+        Active Tabs Only
+        <span class="description">Include only URLs from currently active tabs.</span>
+    </label>
+    <label>
+        <input type="checkbox" id="option-filter-pinned" />
+        Exclude Pinned Tabs
+        <span class="description">Exclude URLs from pinned tabs.</span>
+    </label>
+    <label>
+        <input type="checkbox" id="option-filter-choose"/>
+        Choose Tabs from List
+        <span class="description">Manually select which tab URLs to include.</span>
+    </label>
+
+    <h2>Grouping Options</h2>
+    <label>
+        <input type="checkbox" id="option-group-domain"/>
+        Group by Domain
+        <span class="description">Group results by domain for better organization.</span>
+    </label>
+
+    <h2>Output Type</h2>
+    <label>
+        <input type="checkbox" id="option-plain-text" />
+        Plain Text
+        <span class="description">Output results in plain text format.</span>
+    </label>
+    <label>
+        <input type="checkbox" id="option-markdown" />
+        Markdown
+        <span class="description">Output results in Markdown format.</span>
+    </label>
+    <label>
+        <input type="checkbox" id="option-json" />
+        JSON
+        <span class="description">Output results in JSON format.</span>
+    </label>
+    <label>
+        <input type="checkbox" id="option-csv" />
+        CSV
+        <span class="description">Output results in CSV format.</span>
+    </label>
+
+    <h2>General Settings</h2>
+    <label>
+        <input type="checkbox" id="option-general-notifications" />
+        Enable Notifications
+        <span class="description">Get notified when actions are completed.</span>
+    </label>
+    <label>
+        <input type="checkbox" id="option-general-remember" />
+        Remember Last Used Preferences
+        <span class="description">Automatically use the last selected options.</span>
+    </label>
+
+</body>
+</html>
