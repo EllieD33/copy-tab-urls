@@ -1,0 +1,1 @@
+importScripts('theme.js', 'clipboard.js', 'options.js');
