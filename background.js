@@ -7,7 +7,7 @@ function copyToClipboard(text) {
     });
 }
 
-async function formatTabs(tabs, includeTitle, orderedList) {
+function formatTabs(tabs, includeTitle, orderedList) {
     return tabs.map((tab, index) => {
         let line = '';
         if (orderedList) {
@@ -19,6 +19,27 @@ async function formatTabs(tabs, includeTitle, orderedList) {
         line += tab.url;
         return line;
     }).join('\n');
+}
+
+function groupTabsByDomain(tabs) {
+    return tabs.reduce((groups, tab) => {
+        const domain = (new URL(tab.url)).hostname;
+        if (!groups[domain]) {
+            groups[domain] = []
+        }
+        groups[domain].push(tab);
+        return groups;
+    }, {});
+}
+
+function formatGroupedTabs(groupedTabs, includeTitle, orderedList) {
+    let output = '';
+    for (const domain in groupedTabs) {
+        output += `Domain: ${domain}\n`;
+        output += formatTabs(groupedTabs[domain], includeTitle, orderedList);
+        output += '\n\n';
+    }
+    return output.trim();
 }
 
 async function handleClick() {
@@ -40,8 +61,6 @@ async function handleClick() {
         }
 
         const tabs = await browser.tabs.query(queryOptions);
-        console.log('Tabs retrieved:', tabs);
-
         let filteredTabs = tabs;
 
         if (settings.filterPinned) {
@@ -52,7 +71,14 @@ async function handleClick() {
             filteredTabs = filteredTabs.filter(tab => tab.url.startsWith('http'));
         }
 
-        const output = await formatTabs(filteredTabs, settings.includeTitle, settings.orderedList);
+        let output;
+        if (settings.groupDomain) {
+            const groupedTabs = groupTabsByDomain(filteredTabs);
+            output = formatGroupedTabs(groupedTabs, settings.includeTitle, settings.orderedList);
+        } else {
+            output = formatTabs(filteredTabs, settings.includeTitle, settings.orderedList);
+        }
+        
         copyToClipboard(output);
     } catch (err) {
         console.error('Error:', err);
