@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "GetTabUrls",
+  "name": "CopyTabUrls",
   "version": "1.0",
   "description": "Copies URLs from open tabs to clipboard.",
   "icons": {
@@ -19,7 +19,7 @@
     "default_icon": {
       "48": "icons/copy_all_light.png"
     },
-    "default_title": "Get Tab URLs"
+    "default_title": "Copy Tab URLs"
   }
 }
 
