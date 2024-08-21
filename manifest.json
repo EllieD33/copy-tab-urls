@@ -9,7 +9,8 @@
   "permissions": [
     "tabs",
     "clipboardWrite",
-    "theme"
+    "theme",
+    "storage"
   ],
   "background": {
     "scripts": ["background.js"],
@@ -20,6 +21,7 @@
       "48": "icons/copy_all_light.png"
     },
     "default_title": "Copy Tab URLs"
-  }
+  },
+  "options_page": "options.html"
 }
 
