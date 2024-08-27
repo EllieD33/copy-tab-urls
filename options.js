@@ -2,11 +2,10 @@ async function saveOptions(e) {
     e.preventDefault();
     const includeTitle = document.querySelector("#option-include-title").checked;
     const orderedList = document.querySelector("#option-ordered-list").checked;
-    const filterDomain = document.querySelector("#option-filter-domain").checked;
     const filterHttp = document.querySelector("#option-filter-http").checked;
     const filterActive = document.querySelector("#option-filter-active").checked;
     const filterPinned = document.querySelector("#option-filter-pinned").checked;
-    const filterChoose = document.querySelector("#option-filter-choose").checked;
+    const filterNotPinned = document.querySelector("#option-filter-not-pinned").checked;
     const groupDomain = document.querySelector("#option-group-domain").checked;
     const plainText = document.querySelector("#option-plain-text").checked;
     const markdown = document.querySelector("#option-markdown").checked;
@@ -18,11 +17,10 @@ async function saveOptions(e) {
     await browser.storage.sync.set({
         includeTitle,
         orderedList,
-        filterDomain,
         filterHttp,
         filterActive,
         filterPinned,
-        filterChoose,
+        filterNotPinned,
         groupDomain,
         plainText,
         markdown,
@@ -38,11 +36,10 @@ async function restoreOptions() {
     let {
         includeTitle,
         orderedList,
-        filterDomain,
         filterHttp,
         filterActive,
         filterPinned,
-        filterChoose,
+        filterNotPinned,
         groupDomain,
         plainText,
         markdown,
@@ -53,11 +50,10 @@ async function restoreOptions() {
     } = await browser.storage.sync.get([
         'includeTitle',
         'orderedList',
-        'filterDomain',
         'filterHttp',
         'filterActive',
         'filterPinned',
-        'filterChoose',
+        'filterNotPinned',
         'groupDomain',
         'plainText',
         'markdown',
@@ -69,11 +65,10 @@ async function restoreOptions() {
 
     document.querySelector("#option-include-title").checked = includeTitle || false;
     document.querySelector("#option-ordered-list").checked = orderedList || false;
-    document.querySelector("#option-filter-domain").checked = filterDomain || false;
     document.querySelector("#option-filter-http").checked = filterHttp || false;
     document.querySelector("#option-filter-active").checked = filterActive || false;
     document.querySelector("#option-filter-pinned").checked = filterPinned || false;
-    document.querySelector("#option-filter-choose").checked = filterChoose || false;
+    document.querySelector("#option-filter-not-pinned").checked = filterNotPinned || false;
     document.querySelector("#option-group-domain").checked = groupDomain || false;
     document.querySelector("#option-plain-text").checked = plainText || false;
     document.querySelector("#option-markdown").checked = markdown || false;

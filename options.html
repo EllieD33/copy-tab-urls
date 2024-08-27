@@ -29,11 +29,6 @@
 
         <h2>Filtering Options</h2>
         <label>
-            <input type="checkbox" id="option-filter-domain"/>
-            Filter by Domain
-            <span class="description">Include only URLs from specified domains.</span>
-        </label>
-        <label>
             <input type="checkbox" id="option-filter-http" />
             Include Only HTTP/HTTPS
             <span class="description">Exclude non-web URLs like about: or chrome:.</span>
@@ -44,14 +39,14 @@
             <span class="description">Include only URLs from currently active tabs.</span>
         </label>
         <label>
-            <input type="checkbox" id="option-filter-pinned" />
+            <input type="checkbox" id="option-filter-not-pinned" />
             Exclude Pinned Tabs
             <span class="description">Exclude URLs from pinned tabs.</span>
         </label>
         <label>
-            <input type="checkbox" id="option-filter-choose"/>
-            Choose Tabs from List
-            <span class="description">Manually select which tab URLs to include.</span>
+            <input type="checkbox" id="option-filter-pinned" />
+            Include Only Pinned Tabs
+            <span class="description">Include only URLs from pinned tabs.</span>
         </label>
 
         <h2>Grouping Options</h2>

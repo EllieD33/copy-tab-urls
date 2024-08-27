@@ -47,11 +47,10 @@ async function handleClick() {
         const settings = await browser.storage.sync.get([
             'includeTitle',
             'orderedList',
-            'filterDomain',
             'filterHttp',
             'filterActive',
             'filterPinned',
-            'filterChoose',
+            'filterNotPinned',
             'groupDomain'
         ]);
 
@@ -64,6 +63,10 @@ async function handleClick() {
         let filteredTabs = tabs;
 
         if (settings.filterPinned) {
+            filteredTabs = filteredTabs.filter(tab => tab.pinned);
+        }
+
+        if (settings.filterNotPinned) {
             filteredTabs = filteredTabs.filter(tab => !tab.pinned);
         }
 
@@ -78,12 +81,18 @@ async function handleClick() {
         } else {
             output = formatTabs(filteredTabs, settings.includeTitle, settings.orderedList);
         }
-        
+
         copyToClipboard(output);
     } catch (err) {
         console.error('Error:', err);
     }
 }
+
+browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.command === 'getSelectionList') {
+        sendResponse({ filteredTabs: filteredTabs });
+    }
+});
 
 browser.browserAction.onClicked.addListener(handleClick);
 
