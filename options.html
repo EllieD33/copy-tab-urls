@@ -6,7 +6,8 @@
     <title>Extension Options</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 1rem; }
-        h2 { margin-top: 1.5rem; }
+        fieldset { border: 1px solid #ccc; border-radius: 5px;  margin-bottom: 1rem; }
+        legend { font-weight: bold; margin-bottom: 0.5rem; }
         label { display: block; margin-bottom: 0.75rem; }
         .description { font-size: 0.85rem; color: #555; margin-left: 1.5rem; }
     </style>
@@ -15,62 +16,77 @@
     <h1>Extension Options</h1>
 
     <form id="options-form">
-        <h2>Format Settings</h2>
-        <label>
-            <input type="checkbox" id="option-include-title"/>
-            Include page titles
-            <span class="description">Add titles of pages in the output.</span>
-        </label>
-        <label>
-            <input type="checkbox" id="option-ordered-list" />
-            Copy as ordered list
-            <span class="description">Output the results in a numbered list format.</span>
-        </label>
-        <label>
-            <input type="checkbox" id="option-group-domain"/>
-            Group by domain
-            <span class="description">Group results by domain for better organization.</span>
-        </label>
+        <fieldset>
+            <legend>Output Customisation</legend>
+            <label>
+                <input type="checkbox" id="option-include-title"/>
+                Include page titles
+                <span class="description">Add titles of pages in the output.</span>
+            </label>
+            <label>
+                <input type="checkbox" id="option-ordered-list" />
+                Copy as ordered list
+                <span class="description">Output the results in a numbered list format.</>
+            </label>
+            <label>
+                <input type="checkbox" id="option-group-domain"/>
+                Group by domain
+                <span class="description">Group results by domain for better organization.</>
+            </label>
+        </fieldset>
 
-        <h2>Filtering Options</h2>
-        <label>
-            <input type="checkbox" id="option-filter-http" />
-            HTTP/HTTPS only
-            <span class="description">Exclude non-web URLs like about: or chrome:.</span>
-        </label>
-        <label>
-            <input type="checkbox" id="option-filter-active" />
-            Active tabs only
-            <span class="description">Include only URLs from currently active tabs.</span>
-        </label>
-        <h3>Pinned tabs</h3>
-        <label for="pinned-tabs-options">Choose pinned tabs option:</label>
-        <select name="pinned-tabs-options" id="pinned-tabs-options">
-            <option value="all-tabs">Include all tabs</option>
-            <option value="exclude-pinned">Exclude pinned tabs</option>
-            <option value="pinned-only">Only pinned tabs</option>
-        </select>
+        <fieldset>
+            <legend>Filtering Options</legend>
+            <fieldset>
+                <legend>General Filtering</legend>
+                <label>
+                    <input type="checkbox" id="option-filter-http" />
+                    HTTP/HTTPS only
+                    <span class="description">Exclude non-web URLs like about: or chrome:.</>
+                </label>
+                <label>
+                    <input type="checkbox" id="option-filter-active" />
+                    Active tabs only
+                    <span class="description">Include only URLs from currently active tabs.</>
+                </label>
+            </fieldset>
 
-        <h2>Output Type</h2>
-        <label for="output-type">Choose an output type:</label>
-        <select name="output-type" id="output-type">
-            <option value="plain">Plain text</option>
-            <option value="markdown">Markdown</option>
-            <option value="json">JSON</option>
-            <option value="csv">CSV</option>
-        </select>
+            <fieldset>
+                <legend>Pinned Tabs Filtering</legend>
+                <label for="pinned-tabs-options">Select whether to include, exclude, or only show pinned tabs in the results:</label>
+                <select name="pinned-tabs-options" id="pinned-tabs-options">
+                    <option value="all-tabs">Include all tabs</option>
+                    <option value="exclude-pinned">Exclude pinned tabs</option>
+                    <option value="pinned-only">Only pinned tabs</option>
+                </select>
+            </fieldset>
+        </fieldset>
 
-        <h2>General Settings</h2>
-        <label>
-            <input type="checkbox" id="option-general-notifications" />
-            Enable notifications
-            <span class="description">Get notified when actions are completed.</span>
-        </label>
-        <label>
-            <input type="checkbox" id="option-general-remember" />
-            Remember last used preferences
-            <span class="description">Automatically use the last selected options.</span>
-        </label>
+
+        <fieldset>
+            <legend>Output Format</legend>
+            <label for="output-format">Select the format in which the output will be saved or displayed:</label>
+            <select name="output-format" id="output-format">
+                <option value="plain">Plain text</option>
+                <option value="markdown">Markdown</option>
+                <option value="json">JSON</option>
+                <option value="csv">CSV</option>
+            </select>
+        </fieldset>
+
+        <fieldset>
+            <legend>General Settings</legend>
+            <label>
+                <input type="checkbox" id="option-general-notifications" />
+                Enable notifications
+                <span class="description">Get notified when actions are completed.</>
+            </label>
+            <label>
+                <input type="checkbox" id="option-general-remember" />
+                Remember last used preferences
+                <span class="description">Automatically use the last selected options.</>
+            </label>
+        </fieldset>
 
         <button type="submit">Save Options</button>
     </form>
