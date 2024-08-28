@@ -18,75 +18,57 @@
         <h2>Format Settings</h2>
         <label>
             <input type="checkbox" id="option-include-title"/>
-            Include Page Titles
+            Include page titles
             <span class="description">Add titles of pages in the output.</span>
         </label>
         <label>
             <input type="checkbox" id="option-ordered-list" />
-            Copy as Ordered List
+            Copy as ordered list
             <span class="description">Output the results in a numbered list format.</span>
+        </label>
+        <label>
+            <input type="checkbox" id="option-group-domain"/>
+            Group by domain
+            <span class="description">Group results by domain for better organization.</span>
         </label>
 
         <h2>Filtering Options</h2>
         <label>
             <input type="checkbox" id="option-filter-http" />
-            Include Only HTTP/HTTPS
+            HTTP/HTTPS only
             <span class="description">Exclude non-web URLs like about: or chrome:.</span>
         </label>
         <label>
             <input type="checkbox" id="option-filter-active" />
-            Active Tabs Only
+            Active tabs only
             <span class="description">Include only URLs from currently active tabs.</span>
         </label>
-        <label>
-            <input type="checkbox" id="option-filter-not-pinned" />
-            Exclude Pinned Tabs
-            <span class="description">Exclude URLs from pinned tabs.</span>
-        </label>
-        <label>
-            <input type="checkbox" id="option-filter-pinned" />
-            Include Only Pinned Tabs
-            <span class="description">Include only URLs from pinned tabs.</span>
-        </label>
-
-        <h2>Grouping Options</h2>
-        <label>
-            <input type="checkbox" id="option-group-domain"/>
-            Group by Domain
-            <span class="description">Group results by domain for better organization.</span>
-        </label>
+        <h3>Pinned tabs</h3>
+        <label for="pinned-tabs-options">Choose pinned tabs option:</label>
+        <select name="pinned-tabs-options" id="pinned-tabs-options">
+            <option value="all-tabs">Include all tabs</option>
+            <option value="exclude-pinned">Exclude pinned tabs</option>
+            <option value="pinned-only">Only pinned tabs</option>
+        </select>
 
         <h2>Output Type</h2>
-        <label>
-            <input type="checkbox" id="option-plain-text" />
-            Plain Text
-            <span class="description">Output results in plain text format.</span>
-        </label>
-        <label>
-            <input type="checkbox" id="option-markdown" />
-            Markdown
-            <span class="description">Output results in Markdown format.</span>
-        </label>
-        <label>
-            <input type="checkbox" id="option-json" />
-            JSON
-            <span class="description">Output results in JSON format.</span>
-        </label>
-        <label>
-            <input type="checkbox" id="option-csv" />
-            CSV
-            <span class="description">Output results in CSV format.</span>
-        </label>
+        <label for="output-type">Choose an output type:</label>
+        <select name="output-type" id="output-type">
+            <option value="plain">Plain text</option>
+            <option value="markdown">Markdown</option>
+            <option value="json">JSON</option>
+            <option value="csv">CSV</option>
+        </select>
 
         <h2>General Settings</h2>
         <label>
             <input type="checkbox" id="option-general-notifications" />
-            Enable Notifications
+            Enable notifications
             <span class="description">Get notified when actions are completed.</span>
         </label>
         <label>
             <input type="checkbox" id="option-general-remember" />
-            Remember Last Used Preferences
+            Remember last used preferences
             <span class="description">Automatically use the last selected options.</span>
         </label>
 
