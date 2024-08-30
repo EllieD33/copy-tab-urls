@@ -68,6 +68,40 @@ function convertToMarkdown(plaintext) {
     return convertedLines.join('\n');
 }
 
+function convertToJSON(plaintext) {
+    const lines = plaintext.trim().split('\n');
+
+    const createJsonObject = (title, url) => {
+        return url ? { title, url } : { title };
+    };
+
+    const isValidUrl = (url) => /^https?:\/\//i.test(url) || /^about:/i.test(url);
+
+    const jsonLines = lines.map((line) => {
+        line = line.trim();
+
+        let match = line.match(/^(.*?)(?:\s*-\s*(https?:\/\/.*|about:[^\s]*))$/i);
+
+        if (match) {
+            let title = match[1].trim();
+            let url = match[2].trim();
+
+            if (isValidUrl(url)) {
+                return createJsonObject(title, url);
+            } else {
+                return createJsonObject(`${title} - ${url}`);
+            }
+        } else {
+            if (isValidUrl(line)) {
+                return { url: line };
+            } else {
+                return { title: line };
+            }
+        }
+    });
+
+    return JSON.stringify(jsonLines, null, 2);
+}
 
 async function handleClick() {
     try {
@@ -109,6 +143,8 @@ async function handleClick() {
 
         if (settings.outputFormat === 'markdown') {
             output = convertToMarkdown(output);
+        } else if (settings.outputFormat === 'json') {
+            output = convertToJSON(output);
         }
 
         copyToClipboard(output);

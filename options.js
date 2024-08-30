@@ -1,15 +1,19 @@
 async function saveOptions(e) {
     e.preventDefault();
     const includeTitle = document.querySelector("#option-include-title").checked;
-    const orderedList = document.querySelector("#option-ordered-list").checked;
+    let orderedList = document.querySelector("#option-ordered-list").checked;
     const filterHttp = document.querySelector("#option-filter-http").checked;
     const filterActive = document.querySelector("#option-filter-active").checked;
     const groupDomain = document.querySelector("#option-group-domain").checked;
     const notifications = document.querySelector("#option-general-notifications").checked;
     const rememberPreferences = document.querySelector("#option-general-remember").checked;
 
-    const pinnedTabsOption = document.querySelector("#pinned-tabs-options").value;
     const outputFormat = document.querySelector("#output-format").value;
+    const pinnedTabsOption = document.querySelector("#pinned-tabs-options").value;
+
+    if (outputFormat === 'json') {
+        orderedList = false;
+    }
 
     await browser.storage.sync.set({
         includeTitle,
