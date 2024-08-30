@@ -4,28 +4,21 @@ async function saveOptions(e) {
     const orderedList = document.querySelector("#option-ordered-list").checked;
     const filterHttp = document.querySelector("#option-filter-http").checked;
     const filterActive = document.querySelector("#option-filter-active").checked;
-    const filterPinned = document.querySelector("#option-filter-pinned").checked;
-    const filterNotPinned = document.querySelector("#option-filter-not-pinned").checked;
     const groupDomain = document.querySelector("#option-group-domain").checked;
-    const plainText = document.querySelector("#option-plain-text").checked;
-    const markdown = document.querySelector("#option-markdown").checked;
-    const json = document.querySelector("#option-json").checked;
-    const csv = document.querySelector("#option-csv").checked;
     const notifications = document.querySelector("#option-general-notifications").checked;
     const rememberPreferences = document.querySelector("#option-general-remember").checked;
+
+    const pinnedTabsOption = document.querySelector("#pinned-tabs-options").value;
+    const outputFormat = document.querySelector("#output-format").value;
 
     await browser.storage.sync.set({
         includeTitle,
         orderedList,
         filterHttp,
         filterActive,
-        filterPinned,
-        filterNotPinned,
         groupDomain,
-        plainText,
-        markdown,
-        json,
-        csv,
+        pinnedTabsOption,
+        outputFormat,
         notifications,
         rememberPreferences
     });
@@ -38,13 +31,9 @@ async function restoreOptions() {
         orderedList,
         filterHttp,
         filterActive,
-        filterPinned,
-        filterNotPinned,
         groupDomain,
-        plainText,
-        markdown,
-        json,
-        csv,
+        pinnedTabsOption,
+        outputFormat,
         notifications,
         rememberPreferences
     } = await browser.storage.sync.get([
@@ -52,13 +41,9 @@ async function restoreOptions() {
         'orderedList',
         'filterHttp',
         'filterActive',
-        'filterPinned',
-        'filterNotPinned',
         'groupDomain',
-        'plainText',
-        'markdown',
-        'json',
-        'csv',
+        'pinnedTabsOption',
+        'outputFormat',
         'notifications',
         'rememberPreferences'
     ]);
@@ -67,15 +52,12 @@ async function restoreOptions() {
     document.querySelector("#option-ordered-list").checked = orderedList || false;
     document.querySelector("#option-filter-http").checked = filterHttp || false;
     document.querySelector("#option-filter-active").checked = filterActive || false;
-    document.querySelector("#option-filter-pinned").checked = filterPinned || false;
-    document.querySelector("#option-filter-not-pinned").checked = filterNotPinned || false;
     document.querySelector("#option-group-domain").checked = groupDomain || false;
-    document.querySelector("#option-plain-text").checked = plainText || false;
-    document.querySelector("#option-markdown").checked = markdown || false;
-    document.querySelector("#option-json").checked = json || false;
-    document.querySelector("#option-csv").checked = csv || false;
     document.querySelector("#option-general-notifications").checked = notifications || false;
     document.querySelector("#option-general-remember").checked = rememberPreferences || false;
+
+    document.querySelector("#pinned-tabs-options").value = pinnedTabsOption || 'all-tabs';
+    document.querySelector("#output-format").value = outputFormat || 'plain';
 }
 
 document.addEventListener('DOMContentLoaded', restoreOptions);

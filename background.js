@@ -7,13 +7,14 @@ function copyToClipboard(text) {
     });
 }
 
-function formatTabs(tabs, includeTitle, orderedList) {
+function formatTabs(tabs, includeTitle, orderedList, outputFormat) {
     return tabs.map((tab, index) => {
         let line = '';
+        const shouldIncludeTitle = outputFormat === 'markdown' || (includeTitle && tab.title);
         if (orderedList) {
             line += `${index + 1}. `;
         }
-        if (includeTitle && tab.title) {
+        if (shouldIncludeTitle) {
             line += `${tab.title} - `;
         }
         line += tab.url;
@@ -32,15 +33,41 @@ function groupTabsByDomain(tabs) {
     }, {});
 }
 
-function formatGroupedTabs(groupedTabs, includeTitle, orderedList) {
+function formatGroupedTabs(groupedTabs, includeTitle, orderedList, outputFormat) {
     let output = '';
     for (const domain in groupedTabs) {
         output += `Domain: ${domain}\n`;
-        output += formatTabs(groupedTabs[domain], includeTitle, orderedList);
+        output += formatTabs(groupedTabs[domain], includeTitle, orderedList, outputFormat);
         output += '\n\n';
     }
     return output.trim();
 }
+
+function convertToMarkdown(plaintext) {
+    const lines = plaintext.trim().split('\n');
+    const isOrderedList = /^\d+\.\s/.test(lines[0].trim());
+
+    const convertedLines = lines.map((line, index) => {
+        line = line.trim();
+
+        let match = line.match(/^(.*?)(?:\s*-\s*(\S+))$/i);
+
+        if (match) {
+            let title = match[1].trim();
+            let url = match[2].trim();
+
+            const isHttpUrl = /^https?:\/\//i.test(url);
+            if (isHttpUrl) {
+                return isOrderedList ? `${index + 1}. [${title}](${url})` : `- [${title}](${url})`;
+            } else {
+                return isOrderedList ? `${index + 1}. ${url}` : `- ${url}`;
+            }
+        } 
+    });
+
+    return convertedLines.join('\n');
+}
+
 
 async function handleClick() {
     try {
@@ -49,9 +76,9 @@ async function handleClick() {
             'orderedList',
             'filterHttp',
             'filterActive',
-            'filterPinned',
-            'filterNotPinned',
-            'groupDomain'
+            'groupDomain',
+            'pinnedTabsOption',
+            'outputFormat',
         ]);
 
         let queryOptions = {};
@@ -62,12 +89,10 @@ async function handleClick() {
         const tabs = await browser.tabs.query(queryOptions);
         let filteredTabs = tabs;
 
-        if (settings.filterPinned) {
-            filteredTabs = filteredTabs.filter(tab => tab.pinned);
-        }
-
-        if (settings.filterNotPinned) {
+        if (settings.pinnedTabsOption === 'exclude-pinned') {
             filteredTabs = filteredTabs.filter(tab => !tab.pinned);
+        } else if (settings.pinnedTabsOption === 'pinned-only') {
+            filteredTabs = filteredTabs.filter(tab => tab.pinned);
         }
 
         if (settings.filterHttp) {
@@ -77,9 +102,13 @@ async function handleClick() {
         let output;
         if (settings.groupDomain) {
             const groupedTabs = groupTabsByDomain(filteredTabs);
-            output = formatGroupedTabs(groupedTabs, settings.includeTitle, settings.orderedList);
+            output = formatGroupedTabs(groupedTabs, settings.includeTitle, settings.orderedList, settings.outputFormat);
         } else {
-            output = formatTabs(filteredTabs, settings.includeTitle, settings.orderedList);
+            output = formatTabs(filteredTabs, settings.includeTitle, settings.orderedList, settings.outputFormat);
+        }
+
+        if (settings.outputFormat === 'markdown') {
+            output = convertToMarkdown(output);
         }
 
         copyToClipboard(output);
@@ -87,12 +116,6 @@ async function handleClick() {
         console.error('Error:', err);
     }
 }
-
-browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.command === 'getSelectionList') {
-        sendResponse({ filteredTabs: filteredTabs });
-    }
-});
 
 browser.browserAction.onClicked.addListener(handleClick);
 
