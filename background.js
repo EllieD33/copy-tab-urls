@@ -113,6 +113,7 @@ async function handleClick() {
             'groupDomain',
             'pinnedTabsOption',
             'outputFormat',
+            'notifications'
         ]);
 
         let queryOptions = {};
@@ -148,7 +149,9 @@ async function handleClick() {
         }
 
         copyToClipboard(output);
-        createNotification();
+        if (settings.notifications) {
+            createNotification();
+        }
     } catch (err) {
         console.error('Error:', err);
     }
