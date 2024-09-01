@@ -148,6 +148,7 @@ async function handleClick() {
         }
 
         copyToClipboard(output);
+        createNotification();
     } catch (err) {
         console.error('Error:', err);
     }
@@ -155,6 +156,16 @@ async function handleClick() {
 
 browser.browserAction.onClicked.addListener(handleClick);
 
+
+// Notification logic
+function createNotification() {
+    browser.notifications.create({
+        "type": "basic",
+        "iconUrl": browser.extension.getURL("icon.png"),
+        "title": "Success",
+        "message": "Tab URLs copied to clipboard."
+    });
+}
 
 // Theme logic
 function updateIconBasedOnTheme() {

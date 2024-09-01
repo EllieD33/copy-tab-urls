@@ -10,7 +10,8 @@
     "tabs",
     "clipboardWrite",
     "theme",
-    "storage"
+    "storage",
+    "notifications"
   ],
   "background": {
     "scripts": ["background.js"],
