@@ -5,17 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Extension Options</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 1rem; }
-        fieldset { border: 1px solid #ccc; border-radius: 5px;  margin-bottom: 1rem; }
-        legend { font-weight: bold; margin-bottom: 0.5rem; }
+        body { font-family: Arial, sans-serif; margin: 0 1rem; padding: 0; background-color: #f4f4f9; }
+        h1 { text-align: center }
+        form { display: flex; flex-direction: column; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; }
+        fieldset { border: none; border-radius: 10px;  margin-bottom: 1rem; background-color: #f6fafa; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        legend { font-weight: bold; margin-bottom: 0.5rem; font-size: 1.2rem; color: #333; }
         label { display: block; margin-bottom: 0.75rem; }
+        input[type="checkbox"] { margin-right: 0.5rem; }
+        select { padding: 0.5rem; border-radius: 4px; border: 1px solid #ccc; background-color: #fff; font-size: 1rem; font-family: Arial, sans-serif; }
+        button {  padding: 0.75rem 1.5rem; font-size: 1rem; color: #fff; background-color: #007bff; border: none; border-radius: 5px; cursor: pointer; font-family: Arial, sans-serif; transition: background-color 0.3s ease; }
+        button:hover { background-color: #0056b3; }
+        .sub-fieldset { background-color: #fafffc; }
+        .sub-legend { font-size: 1.1rem; }
+        .submit-container { margin-top: auto;   display: flex; justify-content: center; }
         .description { font-size: 0.85rem; color: #555; margin-left: 1.5rem; }
     </style>
 </head>
 <body>
     <h1>Extension Options</h1>
 
-    <form id="options-form">
+    <form id="options-form">        
         <fieldset>
             <legend>Output Customisation</legend>
             <label>
@@ -26,33 +35,33 @@
             <label>
                 <input type="checkbox" id="option-ordered-list" />
                 Copy as ordered list
-                <span class="description">Output the results in a numbered list format.</>
+                <span class="description">Output the results in a numbered list format.</span>
             </label>
             <label>
                 <input type="checkbox" id="option-group-domain"/>
                 Group by domain
-                <span class="description">Group results by domain for better organization.</>
+                <span class="description">Group results by domain for better organization.</span>
             </label>
         </fieldset>
 
         <fieldset>
             <legend>Filtering Options</legend>
-            <fieldset>
-                <legend>General Filtering</legend>
+            <fieldset class="sub-fieldset">
+                <legend class="sub-legend">General Filtering</legend>
                 <label>
                     <input type="checkbox" id="option-filter-http" />
                     HTTP/HTTPS only
-                    <span class="description">Exclude non-web URLs like about: or chrome:.</>
+                    <span class="description">Exclude non-web URLs like about:.</span>
                 </label>
                 <label>
                     <input type="checkbox" id="option-filter-active" />
                     Active tabs only
-                    <span class="description">Include only URLs from currently active tabs.</>
+                    <span class="description">Include only URLs from currently active tabs.</span>
                 </label>
             </fieldset>
 
-            <fieldset>
-                <legend>Pinned Tabs Filtering</legend>
+            <fieldset class="sub-fieldset">
+                <legend class="sub-legend">Pinned Tabs Filtering</legend>
                 <label for="pinned-tabs-options">Select whether to include, exclude, or only show pinned tabs in the results:</label>
                 <select name="pinned-tabs-options" id="pinned-tabs-options">
                     <option value="all-tabs">Include all tabs</option>
@@ -79,16 +88,17 @@
             <label>
                 <input type="checkbox" id="option-general-notifications" />
                 Enable notifications
-                <span class="description">Get notified when actions are completed.</>
+                <span class="description">Get notified when actions are completed.</span>
             </label>
             <label>
                 <input type="checkbox" id="option-general-remember" />
                 Remember last used preferences
-                <span class="description">Automatically use the last selected options.</>
+                <span class="description">Automatically use the last selected options.</span>
             </label>
         </fieldset>
-
-        <button type="submit">Save Options</button>
+        <div class="submit-container">
+            <button type="submit">Save Options</button>
+        </div>
     </form>
 
     <script src="options.js"></script>
