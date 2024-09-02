@@ -1,3 +1,15 @@
+const defaultOptions = {
+    includeTitle: false,
+    orderedList: false,
+    filterHttp: false,
+    filterActive: false,
+    groupDomain: false,
+    pinnedTabsOption: 'all-tabs',
+    outputFormat: 'plain',
+    notifications: true,
+    rememberPreferences: true, 
+};
+
 async function saveOptions(e) {
     e.preventDefault();
     const includeTitle = document.querySelector("#option-include-title").checked;
@@ -15,32 +27,28 @@ async function saveOptions(e) {
         orderedList = false;
     }
 
-    await browser.storage.sync.set({
-        includeTitle,
-        orderedList,
-        filterHttp,
-        filterActive,
-        groupDomain,
-        pinnedTabsOption,
-        outputFormat,
-        notifications,
-        rememberPreferences
-    });
-    alert('Options saved.');
+    if (rememberPreferences) {
+        await browser.storage.sync.set({
+            includeTitle,
+            orderedList,
+            filterHttp,
+            filterActive,
+            groupDomain,
+            pinnedTabsOption,
+            outputFormat,
+            notifications,
+            rememberPreferences
+        });
+        alert('Options saved.');
+    } else {
+        await browser.storage.sync.clear();
+        await browser.storage.sync.set(defaultOptions);
+    }
+
 }
 
 async function restoreOptions() {
-    let {
-        includeTitle,
-        orderedList,
-        filterHttp,
-        filterActive,
-        groupDomain,
-        pinnedTabsOption,
-        outputFormat,
-        notifications,
-        rememberPreferences
-    } = await browser.storage.sync.get([
+    let storedOptions = await browser.storage.sync.get([
         'includeTitle',
         'orderedList',
         'filterHttp',
@@ -52,16 +60,16 @@ async function restoreOptions() {
         'rememberPreferences'
     ]);
 
-    document.querySelector("#option-include-title").checked = includeTitle || false;
-    document.querySelector("#option-ordered-list").checked = orderedList || false;
-    document.querySelector("#option-filter-http").checked = filterHttp || false;
-    document.querySelector("#option-filter-active").checked = filterActive || false;
-    document.querySelector("#option-group-domain").checked = groupDomain || false;
-    document.querySelector("#option-general-notifications").checked = notifications || false;
-    document.querySelector("#option-general-remember").checked = rememberPreferences || false;
+    document.querySelector("#option-include-title").checked = storedOptions.includeTitle ?? defaultOptions.includeTitle;
+    document.querySelector("#option-ordered-list").checked = storedOptions.orderedList ?? defaultOptions.orderedList;
+    document.querySelector("#option-group-domain").checked = storedOptions.groupDomain ?? defaultOptions.groupDomain;
+    document.querySelector("#option-filter-http").checked = storedOptions.filterHttp ?? defaultOptions.filterHttp;
+    document.querySelector("#option-filter-active").checked = storedOptions.filterActive ?? defaultOptions.filterActive;
+    document.querySelector("#pinned-tabs-options").value = storedOptions.pinnedTabsOption ?? defaultOptions.pinnedTabsOption;
+    document.querySelector("#output-format").value = storedOptions.outputFormat ?? defaultOptions.outputFormat;
+    document.querySelector("#option-general-notifications").checked = storedOptions.notifications ?? defaultOptions.notifications;
+    document.querySelector("#option-general-remember").checked = storedOptions.rememberPreferences ?? defaultOptions.rememberPreferences;
 
-    document.querySelector("#pinned-tabs-options").value = pinnedTabsOption || 'all-tabs';
-    document.querySelector("#output-format").value = outputFormat || 'plain';
 }
 
 document.addEventListener('DOMContentLoaded', restoreOptions);
