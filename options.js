@@ -23,7 +23,7 @@ async function saveOptions(e) {
     const outputFormat = document.querySelector("#output-format").value;
     const pinnedTabsOption = document.querySelector("#pinned-tabs-options").value;
 
-    if (outputFormat === 'json') {
+    if (outputFormat === 'json' || outputFormat === 'csv') {
         orderedList = false;
     }
 

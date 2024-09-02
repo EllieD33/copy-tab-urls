@@ -103,6 +103,39 @@ function convertToJSON(plaintext) {
     return JSON.stringify(jsonLines, null, 2);
 }
 
+function convertToCSV(plaintext) {
+    const lines = plaintext.trim().split('\n');
+
+    const csvLines = lines.map(line => {
+        line = line.trim();
+
+        let match = line.match(/^(.*?)(?:\s*-\s*(https?:\/\/[^\s]+|about:[^\s]+|chrome:[^\s]+|resource:[^\s]+|file:[^\s]+|data:[^\s]+|javascript:[^\s]+|moz-extension:[^\s]+))$/i);
+
+        let title = '';
+        let url = '';
+
+        if (match) {
+            title = match[1].trim();
+            url = match[2].trim();
+        } else {
+            if (/^(https?:\/\/[^\s]+|about:[^\s]+|chrome:[^\s]+|resource:[^\s]+|file:[^\s]+|data:[^\s]+|javascript:[^\s]+|moz-extension:[^\s]+)$/i.test(line)) {
+                url = line.trim();
+            } else {
+                title = line.trim();
+            }
+        }
+
+        title = url ? title : line;
+        
+        title = `"${title.replace(/"/g, '""')}"`;
+        url = url ? `"${url.replace(/"/g, '""')}"` : '';
+
+        return `${title},${url}`; 
+    });
+
+    return csvLines.join('\n');
+}
+
 async function handleClick() {
     try {
         const settings = await browser.storage.sync.get([
@@ -146,6 +179,8 @@ async function handleClick() {
             output = convertToMarkdown(output);
         } else if (settings.outputFormat === 'json') {
             output = convertToJSON(output);
+        } else if (settings.outputFormat === 'csv') {
+            output = convertToCSV(output);
         }
 
         copyToClipboard(output);
