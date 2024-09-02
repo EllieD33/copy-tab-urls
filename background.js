@@ -50,7 +50,7 @@ function convertToMarkdown(plaintext) {
     const markdownLines = lines.map((line, index) => {
         line = line.trim();
 
-        let match = line.match(/^(.*?)(?:\s*-\s*(\S+))$/i);
+        let match = line.match(/^(.*?)(?:\s*-\s*(https?:\/\/[^\s]+|about:[^\s]+|chrome:[^\s]+|resource:[^\s]+|file:[^\s]+|data:[^\s]+|javascript:[^\s]+|moz-extension:[^\s]+))$/i);
 
         if (match) {
             let title = match[1].trim();
