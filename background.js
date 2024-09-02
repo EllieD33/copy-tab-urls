@@ -1,4 +1,4 @@
-//Core logic
+// Core logic
 function copyToClipboard(text) {
     navigator.clipboard.writeText(text).then(() => {
         console.log('Copied to clipboard:', text);
@@ -24,7 +24,12 @@ function formatTabs(tabs, includeTitle, orderedList, outputFormat) {
 
 function groupTabsByDomain(tabs) {
     return tabs.reduce((groups, tab) => {
-        const domain = (new URL(tab.url)).hostname;
+        let domain;
+        try {
+            domain = (new URL(tab.url)).hostname || 'internal URIs';
+        } catch (e) {
+            domain = 'internal URIs';
+        }
         if (!groups[domain]) {
             groups[domain] = []
         }
@@ -70,37 +75,34 @@ function convertToMarkdown(plaintext) {
 
 function convertToJSON(plaintext) {
     const lines = plaintext.trim().split('\n');
+    const groupedEntries = {};
+    let currentDomain = 'Unknown'; 
 
-    const createJsonObject = (title, url) => {
-        return url ? { title, url } : { title };
-    };
+    const urlPattern = /^(.*?)(?:\s*-\s*(https?:\/\/[^\s]+|about:[^\s]+|chrome:[^\s]+|resource:[^\s]+|file:[^\s]+|data:[^\s]+|javascript:[^\s]+|moz-extension:[^\s]+))$/i;
 
-    const isValidUrl = (url) => /^(https?:\/\/[^\s]+|about:[^\s]+|chrome:[^\s]+|resource:[^\s]+|file:[^\s]+|data:[^\s]+|javascript:[^\s]+|moz-extension:[^\s]+)$/i.test(url);
+    const createJsonObject = (title, url) => ({ title, url });
 
-    const jsonLines = lines.map((line) => {
+    lines.forEach(line => {
         line = line.trim();
 
-        let match = line.match(/^(.*?)(?:\s*-\s*(https?:\/\/[^\s]+|about:[^\s]+|chrome:[^\s]+|resource:[^\s]+|file:[^\s]+|data:[^\s]+|javascript:[^\s]+|moz-extension:[^\s]+))$/i);
-
-        if (match) {
-            let title = match[1].trim();
-            let url = match[2].trim();
-
-            if (isValidUrl(url)) {
-                return createJsonObject(title, url);
-            } else {
-                return createJsonObject(`${title} - ${url}`);
+        if (line.startsWith('Domain: ')) {
+            currentDomain = line.substring(8).trim() || 'Unknown';
+            if (!groupedEntries[currentDomain]) {
+                groupedEntries[currentDomain] = [];
             }
-        } else {
-            if (isValidUrl(line)) {
-                return { url: line };
+        } else if (line) {
+            const match = line.match(urlPattern);
+            if (match) {
+                const title = match[1].trim();
+                const url = match[2].trim();
+                groupedEntries[currentDomain].push(createJsonObject(title, url));
             } else {
-                return { title: line };
+                groupedEntries[currentDomain].push(createJsonObject(line));
             }
         }
     });
 
-    return JSON.stringify(jsonLines, null, 2);
+    return JSON.stringify(groupedEntries, null, 2);
 }
 
 function convertToCSV(plaintext) {
