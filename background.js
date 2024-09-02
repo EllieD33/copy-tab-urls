@@ -107,32 +107,44 @@ function convertToJSON(plaintext) {
 
 function convertToCSV(plaintext) {
     const lines = plaintext.trim().split('\n');
+    const csvLines = [];
+    let currentDomain = 'Unknown';
 
-    const csvLines = lines.map(line => {
+    const urlPattern = /^(.*?)(?:\s*-\s*(https?:\/\/[^\s]+|about:[^\s]+|chrome:[^\s]+|resource:[^\s]+|file:[^\s]+|data:[^\s]+|javascript:[^\s]+|moz-extension:[^\s]+))$/i;
+    const domainPattern = /^Domain:\s*(.*)$/;
+
+    lines.forEach(line => {
         line = line.trim();
 
-        let match = line.match(/^(.*?)(?:\s*-\s*(https?:\/\/[^\s]+|about:[^\s]+|chrome:[^\s]+|resource:[^\s]+|file:[^\s]+|data:[^\s]+|javascript:[^\s]+|moz-extension:[^\s]+))$/i);
-
-        let title = '';
-        let url = '';
-
-        if (match) {
-            title = match[1].trim();
-            url = match[2].trim();
-        } else {
-            if (/^(https?:\/\/[^\s]+|about:[^\s]+|chrome:[^\s]+|resource:[^\s]+|file:[^\s]+|data:[^\s]+|javascript:[^\s]+|moz-extension:[^\s]+)$/i.test(line)) {
-                url = line.trim();
-            } else {
-                title = line.trim();
+        if (domainPattern.test(line)) {
+            if (csvLines.length > 0) {
+                csvLines.push(''); 
             }
+            currentDomain = line.replace(domainPattern, '$1').trim() || 'Unknown';
+            csvLines.push(`Domain: "${currentDomain}"`);
+        } else if (line) {
+            const match = line.match(urlPattern);
+            let title = '';
+            let url = '';
+
+            if (match) {
+                title = match[1].trim();
+                url = match[2].trim();
+            } else {
+                if (/^(https?:\/\/[^\s]+|about:[^\s]+|chrome:[^\s]+|resource:[^\s]+|file:[^\s]+|data:[^\s]+|javascript:[^\s]+|moz-extension:[^\s]+)$/i.test(line)) {
+                    url = line.trim();
+                } else {
+                    title = line.trim();
+                }
+            }
+
+            title = url ? title : line;
+
+            title = `"${title.replace(/"/g, '""')}"`;
+            url = url ? `"${url.replace(/"/g, '""')}"` : '';
+
+            csvLines.push(`${title},${url}`);
         }
-
-        title = url ? title : line;
-
-        title = `"${title.replace(/"/g, '""')}"`;
-        url = url ? `"${url.replace(/"/g, '""')}"` : '';
-
-        return `${title},${url}`; 
     });
 
     return csvLines.join('\n');
