@@ -47,7 +47,7 @@ function convertToMarkdown(plaintext) {
     const lines = plaintext.trim().split('\n');
     const isOrderedList = /^\d+\.\s/.test(lines[0].trim());
 
-    const convertedLines = lines.map((line, index) => {
+    const markdownLines = lines.map((line, index) => {
         line = line.trim();
 
         let match = line.match(/^(.*?)(?:\s*-\s*(\S+))$/i);
@@ -65,7 +65,7 @@ function convertToMarkdown(plaintext) {
         } 
     });
 
-    return convertedLines.join('\n');
+    return markdownLines.join('\n');
 }
 
 function convertToJSON(plaintext) {
