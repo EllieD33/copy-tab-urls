@@ -75,12 +75,12 @@ function convertToJSON(plaintext) {
         return url ? { title, url } : { title };
     };
 
-    const isValidUrl = (url) => /^https?:\/\//i.test(url) || /^about:/i.test(url);
+    const isValidUrl = (url) => /^(https?:\/\/[^\s]+|about:[^\s]+|chrome:[^\s]+|resource:[^\s]+|file:[^\s]+|data:[^\s]+|javascript:[^\s]+|moz-extension:[^\s]+)$/i.test(url);
 
     const jsonLines = lines.map((line) => {
         line = line.trim();
 
-        let match = line.match(/^(.*?)(?:\s*-\s*(https?:\/\/.*|about:[^\s]*))$/i);
+        let match = line.match(/^(.*?)(?:\s*-\s*(https?:\/\/[^\s]+|about:[^\s]+|chrome:[^\s]+|resource:[^\s]+|file:[^\s]+|data:[^\s]+|javascript:[^\s]+|moz-extension:[^\s]+))$/i);
 
         if (match) {
             let title = match[1].trim();
@@ -126,7 +126,7 @@ function convertToCSV(plaintext) {
         }
 
         title = url ? title : line;
-        
+
         title = `"${title.replace(/"/g, '""')}"`;
         url = url ? `"${url.replace(/"/g, '""')}"` : '';
 
